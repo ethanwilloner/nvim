@@ -140,3 +140,4 @@ nmap <F3> :TagbarToggle<CR>
 nmap <F4> :YcmCompleter FixIt<CR>
 nmap <F5> :%s/\s\+$//<CR>
 nmap <F6> :Autoformat<CR>
+nmap <buffer> <F12> :exec '!python' shellescape(@%, 1)<CR>
