@@ -4,7 +4,7 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 syntax on
-"colorscheme wombat
+colorscheme wombat
 set number
 set nocompatible
 set shell=bash
@@ -67,6 +67,7 @@ let g:syntastic_check_on_wq = 0
 " YouCompleteMe Settings
 let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 "let g:ycm_confirm_extra_conf = 0
+let g:ycm_python_binary_path = '/usr/bin/python3'
 
 " Force cuda filetype to C to work with clang completion
 autocmd FileType cuda set ft=cuda.c
@@ -131,6 +132,7 @@ noremap <C-o> <C-PageDown>
 let g:NERDTreeMapOpenExpl = ";"
 let g:NERDTreeMapOpenSplit = ";"
 
+" Allow Esc in the built in neovim terminal
 :tnoremap <Esc> <C-\><C-n>
 
 nmap <F2> :NERDTreeTabsToggle<CR>
