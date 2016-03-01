@@ -4,7 +4,7 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 syntax on
-"colorscheme wombat
+colorscheme wombat256
 set number
 set nocompatible
 set shell=bash
