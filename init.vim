@@ -39,7 +39,7 @@ Plug 'Chiel92/vim-autoformat'
 "Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 "Plug 'terryma/vim-multiple-cursors'
 "Plug 'tpope/vim-surround'
-Plug 'flazz/vim-colorschemes', { 'do' : 'mkdir ~/.vim/colors; mv ~/.vim/colors ~/.config/nvim/colors/' }
+Plug 'flazz/vim-colorschemes', { 'do' : 'mkdir ~/.config/nvim/colors; cp ~/.vim/plugged/vim-colorschemes/colors/* ~/.config/nvim/colors/' }
 call plug#end()
 
 " Cursor configuration
@@ -67,6 +67,7 @@ let g:syntastic_check_on_wq = 0
 " YouCompleteMe Settings
 let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 "let g:ycm_confirm_extra_conf = 0
+let g:ycm_python_binary_path = '/usr/bin/python3'
 
 " Force cuda filetype to C to work with clang completion
 autocmd FileType cuda set ft=cuda.c
@@ -131,6 +132,7 @@ noremap <C-o> <C-PageDown>
 let g:NERDTreeMapOpenExpl = ";"
 let g:NERDTreeMapOpenSplit = ";"
 
+" Allow Esc in the built in neovim terminal
 :tnoremap <Esc> <C-\><C-n>
 
 nmap <F2> :NERDTreeTabsToggle<CR>
@@ -138,3 +140,4 @@ nmap <F3> :TagbarToggle<CR>
 nmap <F4> :YcmCompleter FixIt<CR>
 nmap <F5> :%s/\s\+$//<CR>
 nmap <F6> :Autoformat<CR>
+nmap <buffer> <F12> :exec '!python' shellescape(@%, 1)<CR>
