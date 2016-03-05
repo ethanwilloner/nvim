@@ -9,6 +9,7 @@ set number
 set nocompatible
 set shell=bash
 set clipboard=unnamedplus
+set nosmarttab
 
 " NERDTree Settings
 let g:NERDTreeWinSize = 40
@@ -30,7 +31,7 @@ Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --gocode-
 Plug 'jiangmiao/auto-pairs'
 Plug 'bling/vim-airline'
 Plug 'majutsushi/tagbar'
-Plug 'airblade/vim-gitgutter'
+Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-dispatch'
 Plug 'rust-lang/rust.vim'
@@ -52,9 +53,6 @@ highlight iCursor guifg=white guibg=steelblue
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#syntastic#enabled = 1
 
-" Gitgutter Settings
-let g:gitgutter_max_signs = 1500
-
 " Syntastic Settings
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -68,6 +66,9 @@ let g:syntastic_check_on_wq = 0
 let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 "let g:ycm_confirm_extra_conf = 0
 let g:ycm_python_binary_path = '/usr/bin/python3'
+let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
+let g:ycm_key_invoke_completion = '<C-Space>'
+let g:ycm_min_num_of_chars_for_completion = 2
 
 " Force cuda filetype to C to work with clang completion
 autocmd FileType cuda set ft=cuda.c
