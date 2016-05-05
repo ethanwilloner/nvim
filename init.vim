@@ -10,6 +10,10 @@ set nocompatible
 set shell=bash
 set clipboard=unnamedplus
 set nosmarttab
+set undofile
+set undodir=~/.config/nvim/undo
+set undolevels=10000
+set undoreload=10000
 
 " NERDTree Settings
 let g:NERDTreeWinSize = 40
@@ -41,6 +45,7 @@ Plug 'Chiel92/vim-autoformat'
 "Plug 'terryma/vim-multiple-cursors'
 "Plug 'tpope/vim-surround'
 Plug 'flazz/vim-colorschemes', { 'do' : 'mkdir ~/.config/nvim/colors; cp ~/.vim/plugged/vim-colorschemes/colors/* ~/.config/nvim/colors/' }
+Plug 'mbbill/undotree'
 call plug#end()
 
 " Cursor configuration
@@ -141,4 +146,5 @@ nmap <F3> :TagbarToggle<CR>
 nmap <F4> :YcmCompleter FixIt<CR>
 nmap <F5> :%s/\s\+$//<CR>
 nmap <F6> :Autoformat<CR>
+nmap <F7> :UndotreeToggle<cr>
 nmap <F12> :exec '!python' shellescape(@%, 1)<CR>
