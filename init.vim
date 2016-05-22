@@ -14,6 +14,7 @@ set undofile
 set undodir=~/.config/nvim/undo
 set undolevels=10000
 set undoreload=10000
+set splitright
 
 " NERDTree Settings
 let g:NERDTreeWinSize = 40
@@ -25,13 +26,14 @@ let NERDTreeIgnore=['\.pyc$', '\.pyo$', '\.obj$', '\.o$']
 let g:nerdtree_tabs_open_on_gui_startup=0
 
 " Plugins to install through vim-plug
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'scrooloose/syntastic'
 Plug 'vim-scripts/awk.vim'
 Plug 'fatih/vim-go'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --gocode-completer' }
+Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 Plug 'jiangmiao/auto-pairs'
 Plug 'bling/vim-airline'
 Plug 'majutsushi/tagbar'
@@ -41,11 +43,11 @@ Plug 'tpope/vim-dispatch'
 Plug 'rust-lang/rust.vim'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'Chiel92/vim-autoformat'
-"Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-"Plug 'terryma/vim-multiple-cursors'
-"Plug 'tpope/vim-surround'
-Plug 'flazz/vim-colorschemes', { 'do' : 'mkdir ~/.config/nvim/colors; cp ~/.vim/plugged/vim-colorschemes/colors/* ~/.config/nvim/colors/' }
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'mbbill/undotree'
+Plug 'kien/ctrlp.vim'
+Plug 'brookhong/cscope.vim'
+Plug 'flazz/vim-colorschemes', { 'do' : 'mkdir ~/.config/nvim/colors; cp ~/.config/nvim/plugged/vim-colorschemes/colors/* ~/.config/nvim/colors/' }
 call plug#end()
 
 " Cursor configuration
@@ -62,9 +64,9 @@ let g:airline#extensions#syntastic#enabled = 1
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
+let g:syntastic_always_populate_loc_list = 0
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 
 " YouCompleteMe Settings
@@ -74,6 +76,15 @@ let g:ycm_python_binary_path = '/usr/bin/python3'
 let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
 let g:ycm_key_invoke_completion = '<C-Space>'
 let g:ycm_min_num_of_chars_for_completion = 2
+
+" Ctags Settings
+set tags+=tags;$HOME
+
+" Cscope Settings
+let g:cscope_silent = 1
+let g:cscope_open_location = 1
+let g:cscope_auto_update = 1
+let g:cscope_interested_files = '\.c$\|\.cpp$\|\.h$\|\.hpp$\|\.cu$\|\.cuh'
 
 " Force cuda filetype to C to work with clang completion
 autocmd FileType cuda set ft=cuda.c
@@ -143,8 +154,37 @@ let g:NERDTreeMapOpenSplit = ";"
 
 nmap <F2> :NERDTreeTabsToggle<CR>
 nmap <F3> :TagbarToggle<CR>
-nmap <F4> :YcmCompleter FixIt<CR>
-nmap <F5> :%s/\s\+$//<CR>
-nmap <F6> :Autoformat<CR>
-nmap <F7> :UndotreeToggle<cr>
-nmap <F12> :exec '!python' shellescape(@%, 1)<CR>
+nmap <F4> :UndotreeToggle<CR>
+nnoremap <F5> :call CscopeFindInteractive(expand('<cword>'))<CR>
+" For opening files from cscope in a new tab
+map <C-b> :wincmd gf<CR>
+nnoremap <F6> :call ToggleLocationList()<CR>
+nnoremap <F7> :call GoToTag(expand('<cword>'))<CR>
+nmap <F8> :tab split<CR>:exec "ts ".input("Tag Search: ")<CR>
+nmap <F9> :FZF<CR>
+nmap <F12> :%s/\s\+$//<CR>
+
+function GoToTag(tagword)
+    let l:tagfile = &tags
+    :tabnew
+    exec 'set tags=' . l:tagfile
+    exec ':silent tjump ' . a:tagword
+    let l:tagFilename = expand('%:t')
+    if l:tagFilename == ''
+        :tabclose
+    endif
+endfunction
+
+if has("cscope")
+    set csprg=/usr/bin/cscope
+    set csto=0
+    set cst
+    set nocsverb
+    "add any database in current directory
+    if filereadable("cscope.out")
+        cs add cscope.out
+        "else add database pointed to by environment
+    elseif $CSCOPE_DB != ""
+        cs add $CSCOPE_DB
+    endif
+endif
