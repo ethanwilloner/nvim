@@ -174,6 +174,7 @@ nmap <F2> :NERDTreeTabsToggle<CR>
 nmap <F3> :TagbarToggle<CR>
 nmap <F4> :FZF<CR>
 nmap <F5> :call GoToTag(expand('<cword>'))<CR>
+nmap <F11> :! cscope -b -k -q -R -U; ctags --languages=C,C++ --langmap=c++:+.cu. --c-kinds=+cdefgmpst -R .
 nmap <F12> :%s/\s\+$//<CR>
 
 function GoToTag(tagword)
