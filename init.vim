@@ -46,8 +46,9 @@ Plug 'Chiel92/vim-autoformat'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'mbbill/undotree'
 Plug 'kien/ctrlp.vim'
-Plug 'brookhong/cscope.vim'
 Plug 'flazz/vim-colorschemes', { 'do' : 'mkdir ~/.config/nvim/colors; cp ~/.config/nvim/plugged/vim-colorschemes/colors/* ~/.config/nvim/colors/' }
+Plug 'xolox/vim-session'
+Plug 'xolox/vim-misc'
 call plug#end()
 
 " Cursor configuration
@@ -86,6 +87,9 @@ let g:cscope_open_location = 1
 let g:cscope_auto_update = 1
 let g:cscope_interested_files = '\.c$\|\.cpp$\|\.h$\|\.hpp$\|\.cu$\|\.cuh'
 
+" vim-session settings
+let g:session_autosave = 'no' 
+
 " Force cuda filetype to C to work with clang completion
 autocmd FileType cuda set ft=cuda.c
 
@@ -118,6 +122,8 @@ noremap S A
 noremap <C-k> n
 " search to last
 noremap <C-m> N
+
+nmap <C-_> :nohlsearch<CR>
 
 " Next Error
 noremap ] :lnext<CR>
@@ -152,16 +158,22 @@ let g:NERDTreeMapOpenSplit = ";"
 " Allow Esc in the built in neovim terminal
 :tnoremap <Esc> <C-\><C-n>
 
-nmap <F2> :NERDTreeTabsToggle<CR>
-nmap <F3> :TagbarToggle<CR>
-nmap <F4> :UndotreeToggle<CR>
-nnoremap <F5> :call CscopeFindInteractive(expand('<cword>'))<CR>
+" Mappings for Cscope
+nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>	
+nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>	
+nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>	
+nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>	
+nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>	
+nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>	
+nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>	
 " For opening files from cscope in a new tab
 map <C-b> :wincmd gf<CR>
-nnoremap <F6> :call ToggleLocationList()<CR>
-nnoremap <F7> :call GoToTag(expand('<cword>'))<CR>
-nmap <F8> :tab split<CR>:exec "ts ".input("Tag Search: ")<CR>
-nmap <F9> :FZF<CR>
+
+nmap <F2> :NERDTreeTabsToggle<CR>
+nmap <F3> :TagbarToggle<CR>
+nmap <F4> :FZF<CR>
+nmap <F5> :call GoToTag(expand('<cword>'))<CR>
 nmap <F12> :%s/\s\+$//<CR>
 
 function GoToTag(tagword)
