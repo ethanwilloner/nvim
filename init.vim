@@ -1,10 +1,11 @@
 " Standard Vim Settings
 set smartindent
-set tabstop=4
+set tabstop=8
+set softtabstop=4
 set shiftwidth=4
 set expandtab
 syntax on
-colorscheme wombat256
+colorscheme molokai
 set number
 set nocompatible
 set shell=bash
@@ -15,15 +16,6 @@ set undodir=~/.config/nvim/undo
 set undolevels=10000
 set undoreload=10000
 set splitright
-
-" NERDTree Settings
-let g:NERDTreeWinSize = 40
-" For some reason this setting below is broken, will use the default 't' binding for now
-"let g:NERDTreeMapOpenInTab='<Enter>'
-let g:NERDTreeMapOpenInTab='t'
-let g:NERDTreeMapOpenInTabSilent='T'
-let NERDTreeIgnore=['\.pyc$', '\.pyo$', '\.obj$', '\.o$']
-let g:nerdtree_tabs_open_on_gui_startup=0
 
 " Plugins to install through vim-plug
 call plug#begin('~/.config/nvim/plugged')
@@ -49,6 +41,8 @@ Plug 'kien/ctrlp.vim'
 Plug 'flazz/vim-colorschemes', { 'do' : 'mkdir ~/.config/nvim/colors; cp ~/.config/nvim/plugged/vim-colorschemes/colors/* ~/.config/nvim/colors/' }
 Plug 'xolox/vim-session'
 Plug 'xolox/vim-misc'
+Plug 'tpope/vim-dispatch'
+Plug 'radenling/vim-dispatch-neovim'
 call plug#end()
 
 " Cursor configuration
@@ -56,6 +50,15 @@ call plug#end()
 highlight Cursor guibg=steelblue
 highlight iCursor guibg=steelblue
 highlight iCursor guifg=white guibg=steelblue
+
+" NERDTree Settings
+let g:NERDTreeWinSize = 40
+" For some reason this setting below is broken, will use the default 't' binding for now
+"let g:NERDTreeMapOpenInTab='<Enter>'
+let g:NERDTreeMapOpenInTab='t'
+let g:NERDTreeMapOpenInTabSilent='T'
+let NERDTreeIgnore=['\.pyc$', '\.pyo$', '\.obj$', '\.o$']
+let g:nerdtree_tabs_open_on_gui_startup=0
 
 " Airline Settings
 let g:airline#extensions#tabline#enabled = 1
@@ -71,7 +74,7 @@ let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 
 " YouCompleteMe Settings
-let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf = '~/.config/nvim/.ycm_extra_conf.py'
 "let g:ycm_confirm_extra_conf = 0
 let g:ycm_python_binary_path = '/usr/bin/python3'
 let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
@@ -89,6 +92,7 @@ let g:cscope_interested_files = '\.c$\|\.cpp$\|\.h$\|\.hpp$\|\.cu$\|\.cuh'
 
 " vim-session settings
 let g:session_autosave = 'no' 
+let g:session_directory = '~/.config/nvim/sessions'
 
 " Force cuda filetype to C to work with clang completion
 autocmd FileType cuda set ft=cuda.c
@@ -174,9 +178,19 @@ nmap <F2> :NERDTreeTabsToggle<CR>
 nmap <F3> :TagbarToggle<CR>
 nmap <F4> :FZF<CR>
 nmap <F5> :call GoToTag(expand('<cword>'))<CR>
-nmap <F10> :! cscope -b -k -q -R -U; ctags --languages=C,C++ --langmap=c++:+.cu. --c-kinds=+cdefgmpst -R .
+nmap <F10> :call CscopeCtagsRegenerate()<CR>
 nmap <F11> :Autoformat<CR>
 nmap <F12> :%s/\s\+$//<CR>
+
+function CscopeCtagsRegenerate()
+    ":call jobstart('cscope -b -k -q -R -U; ctags --languages=C,C++ --langmap=c++:+.cu. --c-kinds=+cdefgmpstv -R .')
+    :Start! cscope -b -k -q -R -U; ctags --languages=C,C++ --langmap=c++:+.cu. --c-kinds=+cdefgmpstv -R .
+    if filereadable("cscope.out")
+        cs add cscope.out
+    elseif $CSCOPE_DB != ""
+        cs add $CSCOPE_DB
+    endif
+endfunction
 
 function GoToTag(tagword)
     let l:tagfile = &tags

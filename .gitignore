@@ -2,3 +2,4 @@ colors/
 plugged/
 undo/
 autoload/plug.vim.old
+.ycm_extra_conf.pyc
