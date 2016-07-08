@@ -20,7 +20,7 @@ flags = [
     '-I', 'include',
     '-isystem', '/usr/include',
     '-isystem', '/usr/local/include',
-    '-isystem', '/usr/lib/clang/3.7/include',
+    '-isystem', '/usr/include/clang/3.9/include',
     '-isystem', '/usr/include/x86_64-linux-gnu'
 ]
 
