@@ -18,6 +18,7 @@ flags = [
     '-I', '.',
     '-I', 'src',
     '-I', 'include',
+    '-ISUB', './',
     '-isystem', '/usr/include',
     '-isystem', '/usr/local/include',
     '-isystem', '/usr/include/clang/3.9/include',
@@ -46,6 +47,43 @@ SOURCE_EXTENSIONS = [ '.cpp', '.cxx', '.cc', '.c', '.m', '.mm' ]
 def DirectoryOfThisScript():
   return os.path.dirname( os.path.abspath( __file__ ) )
 
+def Subdirectories(directory):
+  res = []
+  for path, subdirs, files in os.walk(directory):
+    for name in subdirs:
+      item = os.path.join(path, name)
+      res.append(item)
+  return res
+
+def IncludeFlagsOfSubdirectory( flags, working_directory ):
+  if not working_directory:
+    return list( flags )
+  new_flags = []
+  make_next_include_subdir = False
+  path_flags = [ '-ISUB']
+  for flag in flags:
+    # include the directory of flag as well
+    new_flag = [flag.replace('-ISUB', '-I')]
+
+    if make_next_include_subdir:
+      make_next_include_subdir = False
+      for subdir in Subdirectories(os.path.join(working_directory, flag)):
+        new_flag.append('-I')
+        new_flag.append(subdir)
+
+    for path_flag in path_flags:
+      if flag == path_flag:
+        make_next_include_subdir = True
+        break
+
+      if flag.startswith( path_flag ):
+        path = flag[ len( path_flag ): ]
+        for subdir in Subdirectories(os.path.join(working_directory, path)):
+            new_flag.append('-I' + subdir)
+        break
+
+    new_flags =new_flags + new_flag
+  return new_flags
 
 def MakeRelativePathsInFlagsAbsolute( flags, working_directory ):
   if not working_directory:

@@ -43,6 +43,8 @@ Plug 'xolox/vim-session'
 Plug 'xolox/vim-misc'
 Plug 'tpope/vim-dispatch'
 Plug 'radenling/vim-dispatch-neovim'
+"Plug 'Maxbrunsfeld/vim-yankstack'
+"Plug 'edkolev/tmuxline.vim'
 call plug#end()
 
 " Cursor configuration
