@@ -5,7 +5,8 @@ set softtabstop=4
 set shiftwidth=4
 set expandtab
 syntax on
-colorscheme molokai
+colorscheme solarized
+set background=dark
 set number
 set nocompatible
 set shell=bash
@@ -186,7 +187,8 @@ nmap <F12> :%s/\s\+$//<CR>
 
 function CscopeCtagsRegenerate()
     ":call jobstart('cscope -b -k -q -R -U; ctags --languages=C,C++ --langmap=c++:+.cu. --c-kinds=+cdefgmpstv -R .')
-    :Start! cscope -b -k -q -R -U; ctags --languages=C,C++ --langmap=c++:+.cu. --c-kinds=+cdefgmpstv -R .
+    ":Start! cscope -b -k -q -R -U; ctags --languages=C,C++ --langmap=c++:+.cu. --c-kinds=+cdefgmpstv -R .
+    :! cscope -b -k -q -R -U; ctags --languages=C,C++ --langmap=c++:+.cu. --c-kinds=+cdefgmpstv -R .
     if filereadable("cscope.out")
         cs add cscope.out
     elseif $CSCOPE_DB != ""
