@@ -5,8 +5,8 @@ set softtabstop=4
 set shiftwidth=4
 set expandtab
 syntax on
-colorscheme solarized
-set background=dark
+"colorscheme solarized
+"set background=dark
 set number
 set nocompatible
 set shell=bash
@@ -17,6 +17,42 @@ set undodir=~/.config/nvim/undo
 set undolevels=10000
 set undoreload=10000
 set splitright
+
+" syntax highlighting
+highlight PreProc    term=underline cterm=NONE ctermfg=5
+highlight Identifier term=underline cterm=NONE ctermfg=6
+highlight Comment    term=NONE      cterm=NONE ctermfg=1
+highlight Constant   term=underline cterm=NONE ctermfg=2
+highlight Special    term=bold      cterm=NONE ctermfg=9
+highlight Statement  term=bold      cterm=bold ctermfg=4
+highlight Type       term=underline cterm=NONE ctermfg=4
+
+highlight ErrorMsg term=standout ctermbg=1 ctermfg=White
+highlight IncSearch term=reverse cterm=reverse
+highlight ModeMsg term=bold cterm=bold
+highlight VertSplit term=reverse cterm=reverse
+highlight Visual term=reverse cterm=reverse
+highlight VisualNOS term=underline,bold cterm=underline,bold
+highlight DiffText term=reverse cterm=bold ctermbg=9
+highlight Directory term=bold ctermfg=4
+highlight LineNr term=underline ctermfg=Black
+highlight MoreMsg term=bold ctermfg=2
+highlight Question term=standout ctermfg=2
+highlight Search term=reverse ctermbg=3 ctermfg=NONE
+highlight SpecialKey term=bold ctermfg=4
+highlight Title term=bold ctermfg=5
+highlight WarningMsg term=standout ctermfg=1
+highlight WildMenu term=standout ctermbg=12 ctermfg=0
+highlight Folded term=standout ctermbg=8 ctermfg=4
+highlight FoldColumn term=standout ctermbg=8 ctermfg=4
+highlight DiffAdd term=bold ctermbg=12
+highlight DiffChange term=bold ctermbg=13
+highlight DiffDelete term=bold ctermfg=4 ctermbg=14
+highlight Ignore ctermfg=darkgrey
+
+highlight StatusLine   cterm=bold ctermbg=4 ctermfg=3
+highlight StatusLineNC cterm=bold ctermbg=4 ctermfg=0
+highlight NonText term=bold ctermfg=4
 
 " Plugins to install through vim-plug
 call plug#begin('~/.config/nvim/plugged')
@@ -44,6 +80,7 @@ Plug 'xolox/vim-session'
 Plug 'xolox/vim-misc'
 Plug 'tpope/vim-dispatch'
 Plug 'radenling/vim-dispatch-neovim'
+Plug 'octol/vim-cpp-enhanced-highlight'
 "Plug 'Maxbrunsfeld/vim-yankstack'
 "Plug 'edkolev/tmuxline.vim'
 call plug#end()
@@ -94,7 +131,7 @@ let g:cscope_auto_update = 1
 let g:cscope_interested_files = '\.c$\|\.cpp$\|\.h$\|\.hpp$\|\.cu$\|\.cuh'
 
 " vim-session settings
-let g:session_autosave = 'no' 
+let g:session_autosave = 'no'
 let g:session_directory = '~/.config/nvim/sessions'
 
 " Force cuda filetype to C to work with clang completion
@@ -166,14 +203,14 @@ let g:NERDTreeMapOpenSplit = ";"
 :tnoremap <Esc> <C-\><C-n>
 
 " Mappings for Cscope
-nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>	
-nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>	
-nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>	
-nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>	
-nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>	
-nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>	
+nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
 nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>	
+nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
 " For opening files from cscope in a new tab
 map <C-b> :wincmd gf<CR>
 
