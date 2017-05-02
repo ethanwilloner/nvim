@@ -50,6 +50,11 @@ highlight DiffChange term=bold ctermbg=13
 highlight DiffDelete term=bold ctermfg=4 ctermbg=14
 highlight Ignore ctermfg=darkgrey
 
+highlight DiffAdd term=bold ctermbg=10 ctermfg=0
+highlight DiffChange term=bold ctermbg=13 ctermfg=0
+highlight DiffDelete term=bold ctermfg=0 ctermbg=1
+highlight SignColumn ctermbg=0
+
 highlight StatusLine   cterm=bold ctermbg=4 ctermfg=3
 highlight StatusLineNC cterm=bold ctermbg=4 ctermfg=0
 highlight NonText term=bold ctermfg=4
@@ -64,7 +69,8 @@ Plug 'fatih/vim-go'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --gocode-completer' }
 Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 Plug 'jiangmiao/auto-pairs'
-Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'majutsushi/tagbar'
 Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
@@ -75,14 +81,14 @@ Plug 'Chiel92/vim-autoformat'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'mbbill/undotree'
 Plug 'kien/ctrlp.vim'
-Plug 'flazz/vim-colorschemes', { 'do' : 'mkdir ~/.config/nvim/colors; cp ~/.config/nvim/plugged/vim-colorschemes/colors/* ~/.config/nvim/colors/' }
+Plug 'flazz/vim-colorschemes', { 'do' : 'mkdir -p ~/.config/nvim/colors; cp ~/.config/nvim/plugged/vim-colorschemes/colors/* ~/.config/nvim/colors/' }
 Plug 'xolox/vim-session'
 Plug 'xolox/vim-misc'
 Plug 'tpope/vim-dispatch'
 Plug 'radenling/vim-dispatch-neovim'
 Plug 'octol/vim-cpp-enhanced-highlight'
 "Plug 'Maxbrunsfeld/vim-yankstack'
-"Plug 'edkolev/tmuxline.vim'
+Plug 'edkolev/tmuxline.vim'
 call plug#end()
 
 " Cursor configuration
@@ -101,6 +107,7 @@ let NERDTreeIgnore=['\.pyc$', '\.pyo$', '\.obj$', '\.o$']
 let g:nerdtree_tabs_open_on_gui_startup=0
 
 " Airline Settings
+let g:airline_theme='aurora'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#syntastic#enabled = 1
 
@@ -225,7 +232,16 @@ nmap <F12> :%s/\s\+$//<CR>
 function CscopeCtagsRegenerate()
     ":call jobstart('cscope -b -k -q -R -U; ctags --languages=C,C++ --langmap=c++:+.cu. --c-kinds=+cdefgmpstv -R .')
     ":Start! cscope -b -k -q -R -U; ctags --languages=C,C++ --langmap=c++:+.cu. --c-kinds=+cdefgmpstv -R .
-    :! cscope -b -k -q -R -U; ctags --languages=C,C++ --langmap=c++:+.cu. --c-kinds=+cdefgmpstv -R .
+    ":! cscope -b -k -q -R -U; ctags --languages=C,C++ --langmap=c++:+.cu. --c-kinds=+cdefgmpstv -R .
+    let l:cscopeRegenerateCommand="find ." .
+                                \ " -path '.git' -prune -o" .
+                                \ " -name '*.[chxsS]'" .
+                                \ " -print > cscope.files;" .
+                                \ " cscope -b -k -q -R -U -i cscope.files;" .
+                                \ " ctags --languages=C,C++ --langmap=c++:+.cu. --c-kinds=+cdefgmpstv -R --exclude=*.o;" .
+                                \ " DISPLAY=:0.0 /usr/bin/notify-send 'Finished Cscope database generation' -t 100000"
+    :execute "!" . l:cscopeRegenerateCommand
+    :cscope reset
     if filereadable("cscope.out")
         cs add cscope.out
     elseif $CSCOPE_DB != ""
