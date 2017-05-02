@@ -232,13 +232,13 @@ nmap <F12> :%s/\s\+$//<CR>
 function CscopeCtagsRegenerate()
     ":call jobstart('cscope -b -k -q -R -U; ctags --languages=C,C++ --langmap=c++:+.cu. --c-kinds=+cdefgmpstv -R .')
     ":Start! cscope -b -k -q -R -U; ctags --languages=C,C++ --langmap=c++:+.cu. --c-kinds=+cdefgmpstv -R .
-    ":! cscope -b -k -q -R -U; ctags --languages=C,C++ --langmap=c++:+.cu. --c-kinds=+cdefgmpstv -R .
+    ":! cscope -b -k -q -R -U; ctags --languages=C,C++ --langmap=c++:+.cu --c-kinds=+cdefgmpstv -R --exclude=*.o .;DISPLAY=:0.0 /usr/bin/notify-send 'Finished Cscope database generation' -t 100000
     let l:cscopeRegenerateCommand="find ." .
                                 \ " -path '.git' -prune -o" .
                                 \ " -name '*.[chxsS]'" .
                                 \ " -print > cscope.files;" .
                                 \ " cscope -b -k -q -R -U -i cscope.files;" .
-                                \ " ctags --languages=C,C++ --langmap=c++:+.cu. --c-kinds=+cdefgmpstv -R --exclude=*.o;" .
+                                \ " ctags --languages=C,C++ --langmap=C++:+.cu.cuh --c-kinds=+cdefgmpstv --c++-kinds=+cdefgmpstv -R --exclude=*.o;" .
                                 \ " DISPLAY=:0.0 /usr/bin/notify-send 'Finished Cscope database generation' -t 100000"
     :execute "!" . l:cscopeRegenerateCommand
     :cscope reset
