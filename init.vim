@@ -88,7 +88,7 @@ Plug 'tpope/vim-dispatch'
 Plug 'radenling/vim-dispatch-neovim'
 Plug 'octol/vim-cpp-enhanced-highlight'
 "Plug 'Maxbrunsfeld/vim-yankstack'
-Plug 'edkolev/tmuxline.vim'
+"Plug 'edkolev/tmuxline.vim'
 call plug#end()
 
 " Cursor configuration
