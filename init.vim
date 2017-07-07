@@ -63,7 +63,7 @@ highlight NonText term=bold ctermfg=4
 call plug#begin('~/.config/nvim/plugged')
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
-Plug 'scrooloose/syntastic'
+Plug 'neomake/neomake'
 Plug 'vim-scripts/awk.vim'
 Plug 'fatih/vim-go'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --gocode-completer' }
@@ -110,6 +110,34 @@ let g:nerdtree_tabs_open_on_gui_startup=0
 let g:airline_theme='aurora'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#syntastic#enabled = 1
+let g:airline_powerline_fonts = 1
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+
+" unicode symbols
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
+let g:airline_symbols.linenr = '␊'
+let g:airline_symbols.linenr = '␤'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.whitespace = 'Ξ'
+
+" airline symbols
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ''
+
 
 " Syntastic Settings
 set statusline+=%#warningmsg#
@@ -153,6 +181,7 @@ noremap d <DEL>
 noremap DD dd
 imap <M-Space> <Esc>
 noremap gg T
+inoremap jj <Esc> 
 
 " Movement Keys
 noremap n h
@@ -225,6 +254,7 @@ nmap <F2> :NERDTreeTabsToggle<CR>
 nmap <F3> :TagbarToggle<CR>
 nmap <F4> :FZF<CR>
 nmap <F5> :call GoToTag(expand('<cword>'))<CR>
+nmap <F9> :YcmCompleter FixIt<CR>
 nmap <F10> :call CscopeCtagsRegenerate()<CR>
 nmap <F11> :Autoformat<CR>
 nmap <F12> :%s/\s\+$//<CR>
