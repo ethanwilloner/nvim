@@ -5,8 +5,8 @@ set softtabstop=4
 set shiftwidth=4
 set expandtab
 syntax on
-"colorscheme solarized
-"set background=dark
+colorscheme solarized
+set background=dark
 set number
 set nocompatible
 set shell=bash
@@ -17,54 +17,14 @@ set undodir=~/.config/nvim/undo
 set undolevels=10000
 set undoreload=10000
 set splitright
-
-" syntax highlighting
-highlight PreProc    term=underline cterm=NONE ctermfg=5
-highlight Identifier term=underline cterm=NONE ctermfg=6
-highlight Comment    term=NONE      cterm=NONE ctermfg=1
-highlight Constant   term=underline cterm=NONE ctermfg=2
-highlight Special    term=bold      cterm=NONE ctermfg=9
-highlight Statement  term=bold      cterm=bold ctermfg=4
-highlight Type       term=underline cterm=NONE ctermfg=4
-
-highlight ErrorMsg term=standout ctermbg=1 ctermfg=White
-highlight IncSearch term=reverse cterm=reverse
-highlight ModeMsg term=bold cterm=bold
-highlight VertSplit term=reverse cterm=reverse
-highlight Visual term=reverse cterm=reverse
-highlight VisualNOS term=underline,bold cterm=underline,bold
-highlight DiffText term=reverse cterm=bold ctermbg=9
-highlight Directory term=bold ctermfg=4
-highlight LineNr term=underline ctermfg=Black
-highlight MoreMsg term=bold ctermfg=2
-highlight Question term=standout ctermfg=2
-highlight Search term=reverse ctermbg=3 ctermfg=NONE
-highlight SpecialKey term=bold ctermfg=4
-highlight Title term=bold ctermfg=5
-highlight WarningMsg term=standout ctermfg=1
-highlight WildMenu term=standout ctermbg=12 ctermfg=0
-highlight Folded term=standout ctermbg=8 ctermfg=4
-highlight FoldColumn term=standout ctermbg=8 ctermfg=4
-highlight DiffAdd term=bold ctermbg=12
-highlight DiffChange term=bold ctermbg=13
-highlight DiffDelete term=bold ctermfg=4 ctermbg=14
-highlight Ignore ctermfg=darkgrey
-
-highlight DiffAdd term=bold ctermbg=10 ctermfg=0
-highlight DiffChange term=bold ctermbg=13 ctermfg=0
-highlight DiffDelete term=bold ctermfg=0 ctermbg=1
-highlight SignColumn ctermbg=0
-
-highlight StatusLine   cterm=bold ctermbg=4 ctermfg=3
-highlight StatusLineNC cterm=bold ctermbg=4 ctermfg=0
-highlight NonText term=bold ctermfg=4
+set cursorline
+set t_Co=16
+set encoding=utf-8
 
 " Plugins to install through vim-plug
 call plug#begin('~/.config/nvim/plugged')
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
-Plug 'neomake/neomake'
-Plug 'vim-scripts/awk.vim'
 Plug 'fatih/vim-go'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --gocode-completer' }
 Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
@@ -87,15 +47,7 @@ Plug 'xolox/vim-misc'
 Plug 'tpope/vim-dispatch'
 Plug 'radenling/vim-dispatch-neovim'
 Plug 'octol/vim-cpp-enhanced-highlight'
-"Plug 'Maxbrunsfeld/vim-yankstack'
-"Plug 'edkolev/tmuxline.vim'
 call plug#end()
-
-" Cursor configuration
-"http://vim.wikia.com/wiki/Configuring_the_cursor
-highlight Cursor guibg=steelblue
-highlight iCursor guibg=steelblue
-highlight iCursor guifg=white guibg=steelblue
 
 " NERDTree Settings
 let g:NERDTreeWinSize = 40
@@ -107,7 +59,6 @@ let NERDTreeIgnore=['\.pyc$', '\.pyo$', '\.obj$', '\.o$']
 let g:nerdtree_tabs_open_on_gui_startup=0
 
 " Airline Settings
-let g:airline_theme='aurora'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline_powerline_fonts = 1
@@ -128,25 +79,6 @@ let g:airline_symbols.paste = 'ρ'
 let g:airline_symbols.paste = 'Þ'
 let g:airline_symbols.paste = '∥'
 let g:airline_symbols.whitespace = 'Ξ'
-
-" airline symbols
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = ''
-
-
-" Syntastic Settings
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_always_populate_loc_list = 0
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
 
 " YouCompleteMe Settings
 let g:ycm_global_ycm_extra_conf = '~/.config/nvim/.ycm_extra_conf.py'
@@ -181,7 +113,7 @@ noremap d <DEL>
 noremap DD dd
 imap <M-Space> <Esc>
 noremap gg T
-inoremap jj <Esc> 
+inoremap jj <Esc>
 
 " Movement Keys
 noremap n h
@@ -253,12 +185,14 @@ map <C-b> :wincmd gf<CR>
 nmap <F2> :NERDTreeTabsToggle<CR>
 nmap <F3> :TagbarToggle<CR>
 nmap <F4> :FZF<CR>
-nmap <F5> :call GoToTag(expand('<cword>'))<CR>
 nmap <F9> :YcmCompleter FixIt<CR>
 nmap <F10> :call CscopeCtagsRegenerate()<CR>
 nmap <F11> :Autoformat<CR>
 nmap <F12> :%s/\s\+$//<CR>
 
+"Lookup in ctags before cscope to prevent seeing a lot of useless signatures
+"when just doing something like looking up a definition
+set csto=1
 function CscopeCtagsRegenerate()
     ":call jobstart('cscope -b -k -q -R -U; ctags --languages=C,C++ --langmap=c++:+.cu. --c-kinds=+cdefgmpstv -R .')
     ":Start! cscope -b -k -q -R -U; ctags --languages=C,C++ --langmap=c++:+.cu. --c-kinds=+cdefgmpstv -R .
@@ -277,6 +211,7 @@ function CscopeCtagsRegenerate()
     elseif $CSCOPE_DB != ""
         cs add $CSCOPE_DB
     endif
+    set csto=1
 endfunction
 
 function GoToTag(tagword)
