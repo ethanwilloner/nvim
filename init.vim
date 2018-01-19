@@ -163,6 +163,9 @@ noremap U <C-r>
 noremap <C-n> <C-PageUp>
 noremap <C-o> <C-PageDown>
 
+" Put what was just pasted back into the paste register
+xnoremap p pgvy
+
 " this nerdtree mapping interferes with movement
 let g:NERDTreeMapOpenExpl = ";"
 let g:NERDTreeMapOpenSplit = ";"
