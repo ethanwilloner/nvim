@@ -6,6 +6,7 @@ set shiftwidth=4
 set expandtab
 syntax on
 colorscheme solarized
+let g:solarized_termtrans=1
 set background=dark
 set number
 set nocompatible
