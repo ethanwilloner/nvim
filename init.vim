@@ -41,13 +41,13 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'Chiel92/vim-autoformat'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'mbbill/undotree'
-Plug 'kien/ctrlp.vim'
 Plug 'flazz/vim-colorschemes', { 'do' : 'mkdir -p ~/.config/nvim/colors; cp ~/.config/nvim/plugged/vim-colorschemes/colors/* ~/.config/nvim/colors/' }
 Plug 'xolox/vim-session'
 Plug 'xolox/vim-misc'
 Plug 'tpope/vim-dispatch'
 Plug 'radenling/vim-dispatch-neovim'
 Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'szw/vim-maximizer'
 call plug#end()
 
 " NERDTree Settings
@@ -104,6 +104,12 @@ let g:session_directory = '~/.config/nvim/sessions'
 
 " Force cuda filetype to C to work with clang completion
 autocmd FileType cuda set ft=cuda.c
+
+" FZF Settings
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
 
 """"""""""""""""""""
 " Colemak Mappings "
