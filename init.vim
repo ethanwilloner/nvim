@@ -21,6 +21,7 @@ set splitright
 set cursorline
 set t_Co=16
 set encoding=utf-8
+set ignorecase
 
 " Plugins to install through vim-plug
 call plug#begin('~/.config/nvim/plugged')
