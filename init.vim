@@ -1,6 +1,6 @@
 " Standard Vim Settings
 set smartindent
-set tabstop=8
+set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set expandtab
@@ -22,15 +22,15 @@ set cursorline
 set t_Co=16
 set encoding=utf-8
 set ignorecase
+set textwidth=80
 
 " Plugins to install through vim-plug
 call plug#begin('~/.config/nvim/plugged')
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'fatih/vim-go'
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --gocode-completer' }
-Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
-Plug 'jiangmiao/auto-pairs'
+"Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --gocode-completer' }
+"Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'majutsushi/tagbar'
@@ -41,6 +41,7 @@ Plug 'rust-lang/rust.vim'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'Chiel92/vim-autoformat'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 Plug 'mbbill/undotree'
 Plug 'flazz/vim-colorschemes', { 'do' : 'mkdir -p ~/.config/nvim/colors; cp ~/.config/nvim/plugged/vim-colorschemes/colors/* ~/.config/nvim/colors/' }
 Plug 'xolox/vim-session'
@@ -49,6 +50,8 @@ Plug 'tpope/vim-dispatch'
 Plug 'radenling/vim-dispatch-neovim'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'szw/vim-maximizer'
+Plug 'tpope/vim-endwise'
+Plug 'cohama/lexima.vim'
 call plug#end()
 
 " NERDTree Settings
@@ -67,6 +70,15 @@ let g:airline_powerline_fonts = 1
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
+
+" Undo Tree
+if has("persistent_undo")
+    set undodir=~/.undodir/
+    set undofile
+endif
+
+" Maximizer toggle
+noremap <Leader><Space> :MaximizerToggle<CR>
 
 " unicode symbols
 let g:airline_left_sep = '»'
@@ -111,6 +123,26 @@ let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit' }
+
+command! -bang -nargs=* Rg
+    \ call fzf#vim#grep(
+    \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+    \   <bang>0 ? fzf#vim#with_preview('up:60%')
+    \           : fzf#vim#with_preview('right:50%:hidden', '?'0),
+    \   <bang>0)
+
+command! FZF
+    \ call fzf#run({fzf#vim#with_preview({
+    \   'source' : 'find . -type f',
+    \   'sink' : 'tabedit', 'down' : '30%'})
+    \ })
+
+if has('nvim')
+    aug fzf_setup
+        au!
+        au TermOpen term://*FZF tnoremap <silent> <buffer> <ESC> <c-c>
+    aug END
+end
 
 """"""""""""""""""""
 " Colemak Mappings "
