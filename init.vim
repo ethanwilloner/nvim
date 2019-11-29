@@ -148,7 +148,7 @@ end
 " Colemak Mappings "
 """""""""""""""""""
 
-noremap h :
+noremap o :
 noremap d <DEL>
 noremap DD dd
 imap <M-Space> <Esc>
@@ -156,10 +156,10 @@ noremap gg T
 inoremap jj <Esc>
 
 " Movement Keys
-noremap n h
-noremap e j
-noremap i k
-noremap o l
+noremap h h
+noremap n j
+noremap e k
+noremap i l
 
 " insert
 noremap a i
@@ -183,25 +183,25 @@ noremap ] :lnext<CR>
 noremap [ :lprevious<CR>
 
 " end of word
-noremap I e
+noremap E e
 " end of line
-noremap O g_
+noremap I g_
 " beginning of word
-noremap E b
+noremap N b
 "beginning of line
-noremap N _
+noremap H _
 
 " Page Half Down
-noremap <C-e> <C-d>
+noremap <C-n> <C-d>
 "Page Half Up
-noremap <C-i> <C-u>
+noremap <C-e> <C-u>
 
 " U = Redo with U
 noremap U <C-r>
 
 " c-h/c-i switches tabs [inoremap <c-i> messes up insert-mode tabbing]
-noremap <C-n> <C-PageUp>
-noremap <C-o> <C-PageDown>
+noremap <C-h> <C-PageUp>
+noremap <C-i> <C-PageDown>
 
 " Put what was just pasted back into the paste register
 xnoremap p pgvy
@@ -228,6 +228,7 @@ map <C-b> :wincmd gf<CR>
 nmap <F2> :NERDTreeTabsToggle<CR>
 nmap <F3> :TagbarToggle<CR>
 nmap <F4> :FZF<CR>
+nmap O :FZF<CR>
 nmap <F9> :YcmCompleter FixIt<CR>
 nmap <F10> :call CscopeCtagsRegenerate()<CR>
 nmap <F11> :Autoformat<CR>
