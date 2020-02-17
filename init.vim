@@ -210,6 +210,20 @@ xnoremap p pgvy
 let g:NERDTreeMapOpenExpl = ";"
 let g:NERDTreeMapOpenSplit = ";"
 
+" Alt to move lines up and down:
+" Thanks ne0
+" TODO: Set these up for colemak/my bindings.
+"nnoremap <A-k> :m .-2<CR>==
+"nnoremap <A-j> :m .+1<CR>==
+"inoremap <A-k> <Esc>:m .-2<CR>==gi
+"inoremap <A-j> <Esc>:m .+1<CR>==gi
+"vnoremap <A-j> :m '>+1<CR>gv=gv
+"vnoremap <A-k> :m '<-2<CR>gv=gv
+
+" Scroll without moving cursor
+" Currently I noticed C-A-e mves the buffer without
+" moving the cursor, look into binding this. TODO
+
 " Allow Esc in the built in neovim terminal
 :tnoremap <Esc> <C-\><C-n>
 
