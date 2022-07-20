@@ -5,8 +5,7 @@ set softtabstop=4
 set shiftwidth=4
 set expandtab
 syntax on
-colorscheme solarized
-let g:solarized_termtrans=1
+colorscheme Monokai
 set background=dark
 set number
 set nocompatible
@@ -26,33 +25,26 @@ set textwidth=80
 
 " Plugins to install through vim-plug
 call plug#begin('~/.config/nvim/plugged')
-Plug 'scrooloose/nerdtree'
-Plug 'jistr/vim-nerdtree-tabs'
-Plug 'fatih/vim-go'
-"Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --gocode-completer' }
+Plug 'ms-jpq/coq_nvim', {'branch':'coq'}
+Plug 'ms-jpq/coq.artifacts', {'branch':'artifacts'}
+"Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
 "Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'majutsushi/tagbar'
-Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-dispatch'
-Plug 'rust-lang/rust.vim'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'Chiel92/vim-autoformat'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'mbbill/undotree'
 Plug 'flazz/vim-colorschemes', { 'do' : 'mkdir -p ~/.config/nvim/colors; cp ~/.config/nvim/plugged/vim-colorschemes/colors/* ~/.config/nvim/colors/' }
-Plug 'xolox/vim-session'
 Plug 'xolox/vim-misc'
-Plug 'tpope/vim-dispatch'
 Plug 'radenling/vim-dispatch-neovim'
-Plug 'octol/vim-cpp-enhanced-highlight'
-Plug 'szw/vim-maximizer'
-Plug 'tpope/vim-endwise'
-Plug 'cohama/lexima.vim'
 call plug#end()
+
+augroup COQ
+    autocmd!
+    autocmd VimEnter * COQnow -s
+augroup END
 
 " NERDTree Settings
 let g:NERDTreeWinSize = 40
@@ -101,9 +93,18 @@ let g:ycm_python_binary_path = '/usr/bin/python3'
 let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
 let g:ycm_key_invoke_completion = '<C-Space>'
 let g:ycm_min_num_of_chars_for_completion = 2
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_semantic_triggers =  {
+  \   'c': ['->', '.'],
+  \   'cpp,cuda,objcpp': ['->', '.', '::'],
+  \   'cs,go,python': ['.'],
+  \   'rust': ['.', '::'],
+  \   'erlang': [':'],
+  \ }
 
 " Ctags Settings
 set tags+=tags;$HOME
+nnoremap <C-]> :tag<CR>
 
 " Cscope Settings
 let g:cscope_silent = 1
@@ -296,3 +297,6 @@ if has("cscope")
         cs add $CSCOPE_DB
     endif
 endif
+
+":command! -range=% -nargs=1 SumColumn <line1>,<line2>!awk -F '|' '{print; sum+=$('<args>' + 1)} END {print "Total: "sum}'
+:command! -range=% SumColumn <line1>,<line2>!awk -F '|' '{print; sum+=$(0 + 1)} END {print "Total: "sum}'
