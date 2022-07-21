@@ -25,6 +25,7 @@ set textwidth=80
 
 " Plugins to install through vim-plug
 call plug#begin('~/.config/nvim/plugged')
+Plug 'neovim/nvim-lspconfig'
 Plug 'ms-jpq/coq_nvim', {'branch':'coq'}
 Plug 'ms-jpq/coq.artifacts', {'branch':'artifacts'}
 "Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
@@ -40,20 +41,12 @@ Plug 'flazz/vim-colorschemes', { 'do' : 'mkdir -p ~/.config/nvim/colors; cp ~/.c
 Plug 'xolox/vim-misc'
 Plug 'radenling/vim-dispatch-neovim'
 call plug#end()
+lua require'lspconfig'.jedi_language_server.setup{}
 
 augroup COQ
     autocmd!
     autocmd VimEnter * COQnow -s
 augroup END
-
-" NERDTree Settings
-let g:NERDTreeWinSize = 40
-" For some reason this setting below is broken, will use the default 't' binding for now
-"let g:NERDTreeMapOpenInTab='<Enter>'
-let g:NERDTreeMapOpenInTab='t'
-let g:NERDTreeMapOpenInTabSilent='T'
-let NERDTreeIgnore=['\.pyc$', '\.pyo$', '\.obj$', '\.o$']
-let g:nerdtree_tabs_open_on_gui_startup=0
 
 " Airline Settings
 let g:airline#extensions#tabline#enabled = 1
@@ -68,9 +61,6 @@ if has("persistent_undo")
     set undodir=~/.undodir/
     set undofile
 endif
-
-" Maximizer toggle
-noremap <Leader><Space> :MaximizerToggle<CR>
 
 " unicode symbols
 let g:airline_left_sep = '»'
@@ -207,24 +197,6 @@ noremap <C-i> <C-PageDown>
 " Put what was just pasted back into the paste register
 xnoremap p pgvy
 
-" this nerdtree mapping interferes with movement
-let g:NERDTreeMapOpenExpl = ";"
-let g:NERDTreeMapOpenSplit = ";"
-
-" Alt to move lines up and down:
-" Thanks ne0
-" TODO: Set these up for colemak/my bindings.
-"nnoremap <A-k> :m .-2<CR>==
-"nnoremap <A-j> :m .+1<CR>==
-"inoremap <A-k> <Esc>:m .-2<CR>==gi
-"inoremap <A-j> <Esc>:m .+1<CR>==gi
-"vnoremap <A-j> :m '>+1<CR>gv=gv
-"vnoremap <A-k> :m '<-2<CR>gv=gv
-
-" Scroll without moving cursor
-" Currently I noticed C-A-e mves the buffer without
-" moving the cursor, look into binding this. TODO
-
 " Allow Esc in the built in neovim terminal
 :tnoremap <Esc> <C-\><C-n>
 
@@ -240,14 +212,10 @@ nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
 " For opening files from cscope in a new tab
 map <C-b> :wincmd gf<CR>
 
-nmap <F2> :NERDTreeTabsToggle<CR>
-nmap <F3> :TagbarToggle<CR>
-nmap <F4> :FZF<CR>
-nmap O :FZF<CR>
-nmap <F9> :YcmCompleter FixIt<CR>
-nmap <F10> :call CscopeCtagsRegenerate()<CR>
-nmap <F11> :Autoformat<CR>
-nmap <F12> :%s/\s\+$//<CR>
+"nmap <F3> :TagbarToggle<CR>
+"nmap <F10> :call CscopeCtagsRegenerate()<CR>
+"nmap <F11> :Autoformat<CR>
+"nmap <F12> :%s/\s\+$//<CR>
 
 "Lookup in ctags before cscope to prevent seeing a lot of useless signatures
 "when just doing something like looking up a definition
