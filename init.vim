@@ -40,8 +40,25 @@ Plug 'mbbill/undotree'
 Plug 'flazz/vim-colorschemes', { 'do' : 'mkdir -p ~/.config/nvim/colors; cp ~/.config/nvim/plugged/vim-colorschemes/colors/* ~/.config/nvim/colors/' }
 Plug 'xolox/vim-misc'
 Plug 'radenling/vim-dispatch-neovim'
+Plug 'windwp/nvim-autopairs'
 call plug#end()
-lua require'lspconfig'.jedi_language_server.setup{}
+let g:AutoPairsMapCh=''
+
+lua << EOF
+require("nvim-autopairs").setup{}
+vim.g.coq_settings = {
+    auto_start = 'shut-up',
+    display = {
+        icons = { mode = 'none' }
+    },
+    limits = {
+        completion_auto_timeout = 5.0,
+        completion_manual_timeout = 5.0
+    },
+}
+require 'coq'
+require 'lspconfig'.jedi_language_server.setup(coq.lsp_ensure_capabilities())
+EOF
 
 augroup COQ
     autocmd!
@@ -51,7 +68,7 @@ augroup END
 " Airline Settings
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#syntastic#enabled = 1
-let g:airline_powerline_fonts = 1
+let g:airline_powerline_fonts = 0
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
@@ -214,8 +231,7 @@ map <C-b> :wincmd gf<CR>
 
 "nmap <F3> :TagbarToggle<CR>
 "nmap <F10> :call CscopeCtagsRegenerate()<CR>
-"nmap <F11> :Autoformat<CR>
-"nmap <F12> :%s/\s\+$//<CR>
+nmap <F12> :%s/\s\+$//<CR>
 
 "Lookup in ctags before cscope to prevent seeing a lot of useless signatures
 "when just doing something like looking up a definition
