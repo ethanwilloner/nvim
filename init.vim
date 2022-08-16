@@ -22,6 +22,7 @@ set t_Co=16
 set encoding=utf-8
 set ignorecase
 set textwidth=80
+set mouse=
 
 " Plugins to install through vim-plug
 call plug#begin('~/.config/nvim/plugged')
